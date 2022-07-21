@@ -1,3 +1,12 @@
+
+LoggerApi
+To run the application:
+1. There is "logfile.txt" in the "resources" folder -> src/main/resources/logfile.txt
+2. You can enter a file name (filePath) here: ![img.png](img.png)
+In case you don't enter a file name (filePath), it will already be predefined
+3. Run the app
+4. 
+
 Summary of task
 Our custom-build server logs different events to a file named logfile.txt. Every event has 2 entries in the file
 - one entry when the event was started and another when the event was finished. The entries in the file
