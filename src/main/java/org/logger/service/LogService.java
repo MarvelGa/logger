@@ -32,12 +32,10 @@ public class LogService {
     public void processLog(String fileName) throws URISyntaxException, IOException {
         log.debug("\"processLog\" method starts");
         Long durationAlert = 4L;
-        ObjectMapper objectMapper = new ObjectMapper();
         Map<String, LogDetails> idToLogDetails = new HashMap<>();
-        List<Log> parsedLogs = parseLogs(fileName, objectMapper);
+        List<Log> parsedLogs = parseLogs(fileName);
         getLogDetails(durationAlert, idToLogDetails, parsedLogs);
         storeLogDetails(idToLogDetails);
-
         printLogDetails(idToLogDetails);
         log.debug("\"processLog\" method finished");
     }
@@ -75,27 +73,23 @@ public class LogService {
         log.info("\"getLogDetails\" method finished");
     }
 
-    private LogDetails convertLogToLogDetails(Log log) {
+    public LogDetails convertLogToLogDetails(Log log) {
         LogDetails createdLD = new LogDetails();
         createdLD.setId(log.getId());
         createdLD.setDuration(log.getTimestamp());
-        if (log.getHost() != null) {
-            createdLD.setHost(log.getHost());
-        }
-        if (log.getType() != null) {
-            createdLD.setType(log.getType());
-        }
+        createdLD.setHost(log.getHost());
+        createdLD.setType(log.getType());
         createdLD.setAlert(false);
         return createdLD;
     }
 
-    private List<Log> parseLogs(String fileName, ObjectMapper objectMapper) throws IOException, URISyntaxException {
+    public List<Log> parseLogs(String fileName) throws IOException, URISyntaxException {
         log.info("\"parseLogs\" method starts");
-
+        ObjectMapper objectMapper = new ObjectMapper();
         Stream<String> stringStream = Files.lines(Paths.get(ClassLoader.getSystemResource(fileName)
-                        .toURI()));
+                .toURI()));
 
-       AtomicReference<List<Log>> parsedLogs = new AtomicReference<>(stringStream
+        AtomicReference<List<Log>> parsedLogs = new AtomicReference<>(stringStream
                 .parallel()
                 .map(el -> {
                     try {
@@ -106,15 +100,15 @@ public class LogService {
                     }
                 })
                 .collect(Collectors.toList()));
-
         stringStream.close();
         log.info("\"parseLogs\" method finished");
         return parsedLogs.get();
     }
 
-    public void validatePath(String fileName) throws IOException {
+    public boolean validatePath(String fileName) throws IOException {
         log.info("\"validatePath\" method starts");
         new ClassPathResource(fileName).getFile();
         log.info("\"validatePath\" method finished");
+        return true;
     }
 }
