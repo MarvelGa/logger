@@ -4,11 +4,13 @@ To run the application:
 1. There is "logfile.txt" in the "resources" folder -> src/main/resources/logfile.txt
 2. You can enter a file name (filePath) here: ![img.png](img.png)
 In case you don't enter a file name (filePath), it will already be predefined
-3. Run the app
-4. Provided unit tests for LogService (src/test/java/org/logger/LogServiceUnitTest.java) and test for context of spring boot (src/test/java/org/logger/SpringBootContextTest.java).
-5. The result will be: ![img_1.png](img_1.png)
+3. Run the Application.java (src/main/java/org/logger/Application.java);
+4. The result will be: ![img_1.png](img_1.png)
+5. Provided unit tests for LogService (src/test/java/org/logger/LogServiceUnitTest.java) and test for context of spring boot (src/test/java/org/logger/SpringBootContextTest.java).
+6. After launch of the app you will find myApp.log in the root of the project.
+7. The application uses HSQLDB, all setting are located in application.properties (src/main/resources/application.properties).
 
-Summary of task
+                               SUMMARY OF TASK
 Our custom-build server logs different events to a file named logfile.txt. Every event has 2 entries in the file
 - one entry when the event was started and another when the event was finished. The entries in the file
   have no specific order (a finish event could occur before a start event for a given id)
