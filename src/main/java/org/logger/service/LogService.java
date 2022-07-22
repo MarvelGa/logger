@@ -29,7 +29,7 @@ public class LogService {
 
     private final LogDetailsRepository repository;
 
-    public void processLog(String fileName) throws URISyntaxException, IOException {
+    public boolean processLog(String fileName) throws URISyntaxException, IOException {
         log.debug("\"processLog\" method starts");
         Long durationAlert = 4L;
         Map<String, LogDetails> idToLogDetails = new HashMap<>();
@@ -38,23 +38,26 @@ public class LogService {
         storeLogDetails(idToLogDetails);
         printLogDetails(idToLogDetails);
         log.debug("\"processLog\" method finished");
+        return true;
     }
 
-    private void printLogDetails(Map<String, LogDetails> idToLogDetails) {
+    public boolean printLogDetails(Map<String, LogDetails> idToLogDetails) {
         log.info("\"printLogDetails\" method starts");
         System.out.println(idToLogDetails);
         List<LogDetails> result = (List<LogDetails>) repository.findAll();
         System.out.println(result);
         log.info("\"printLogDetails\" method finished");
+        return true;
     }
 
-    private void storeLogDetails(Map<String, LogDetails> idToLogDetails) {
+    public Iterable<LogDetails> storeLogDetails(Map<String, LogDetails> idToLogDetails) {
         log.info("\"storeLogDetails\" method starts");
-        repository.saveAll(idToLogDetails.values());
+        Iterable<LogDetails> result =  repository.saveAll(idToLogDetails.values());
         log.info("\"storeLogDetails\" method finished");
+        return result;
     }
 
-    private void getLogDetails(Long durationAlert, Map<String, LogDetails> idToLogDetails, List<Log> parsedLogs) {
+    public void getLogDetails(Long durationAlert, Map<String, LogDetails> idToLogDetails, List<Log> parsedLogs) {
         log.info("\"getLogDetails\" method starts");
         parsedLogs.forEach(log -> {
             if (!idToLogDetails.containsKey(log.getId())) {

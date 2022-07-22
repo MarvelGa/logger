@@ -11,18 +11,23 @@ import org.logger.repository.LogDetailsRepository;
 import org.logger.service.LogService;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.Rollback;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.booleanThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -39,6 +44,9 @@ class LogServiceUnitTest {
     private LogDetails logDetails2;
     private String fileName = "forTest/fortest.txt";
     private String fileNameWithSyntaxProblem = "forTest/fileWithSyntaxProblems.txt";
+
+    private Long durationAlert = 4L;
+
 
     @BeforeEach
     void setUp() {
@@ -77,7 +85,7 @@ class LogServiceUnitTest {
                 .build();
 
         logDetails2 = LogDetails.builder()
-                .id("aa")
+                .id("bb")
                 .duration(8L)
                 .alert(true)
                 .build();
@@ -132,4 +140,51 @@ class LogServiceUnitTest {
     void shouldPassValidationIfFileNameIsCorrect() throws IOException {
         assertTrue(service.validatePath(fileName));
     }
+
+    @Test
+    void shouldGetLogDetailsFromParsedLogs() {
+        List<Log> parsedLogs = Arrays.asList(logStart1, logStart2, logFinish2, logFinish1);
+
+        Map<String, LogDetails> expected = new HashMap<>();
+        expected.put("aa", logDetails1);
+        expected.put("bb", logDetails2);
+
+        Map<String, LogDetails> actual = new HashMap<>();
+        service.getLogDetails(durationAlert, actual, parsedLogs);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldStoreLogDetails() {
+        Map<String, LogDetails> idToLogDetails = new HashMap<>();
+        idToLogDetails.put("aa", logDetails1);
+        idToLogDetails.put("bb", logDetails2);
+
+        when(repository.saveAll(idToLogDetails.values())).thenReturn(idToLogDetails.values());
+        Iterable<LogDetails> actual = service.storeLogDetails(idToLogDetails);
+
+        verify(repository).saveAll(idToLogDetails.values());
+        assertEquals(idToLogDetails.values(), actual);
+    }
+
+    @Test
+    void shouldReturnTrueIfEverythingIsSuccessfully() throws URISyntaxException, IOException {
+        boolean actual = service.processLog(fileName);
+        assertTrue(actual);
+    }
+
+    @Test
+    void shouldPrintLogs(){
+        Map<String, LogDetails> idToLogDetails = new HashMap<>();
+        idToLogDetails.put("aa", logDetails1);
+        idToLogDetails.put("bb", logDetails2);
+
+        when(repository.findAll()).thenReturn(Arrays.asList(logDetails1, logDetails2));
+
+        boolean actual = service.printLogDetails(idToLogDetails);
+        verify(repository,atLeastOnce()).findAll();
+        assertTrue(actual);
+    }
+
 }
