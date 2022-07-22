@@ -36,16 +36,20 @@ public class LogService {
         List<Log> parsedLogs = parseLogs(fileName);
         getLogDetails(durationAlert, idToLogDetails, parsedLogs);
         storeLogDetails(idToLogDetails);
-        printLogDetails(idToLogDetails);
+        printParsedLogsAndLogDetails(parsedLogs);
         log.debug("\"processLog\" method finished");
         return true;
     }
 
-    public boolean printLogDetails(Map<String, LogDetails> idToLogDetails) {
+    public boolean printParsedLogsAndLogDetails(List<Log> parsedLogs) {
         log.info("\"printLogDetails\" method starts");
-        System.out.println(idToLogDetails);
+        System.out.println("**************Result Of Parsing The File******************************");
+        parsedLogs.stream().forEach(System.out::println);
+        System.out.println("********************************************");
         List<LogDetails> result = (List<LogDetails>) repository.findAll();
-        System.out.println(result);
+        System.out.println("*****************Result About Logs Details From DataBase***************************");
+        result.stream().forEach(System.out::println);
+        System.out.println("********************************************");
         log.info("\"printLogDetails\" method finished");
         return true;
     }

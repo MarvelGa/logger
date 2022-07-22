@@ -9,12 +9,9 @@ import org.logger.entity.LogDetails;
 import org.logger.exception.FileCanNotBeParsedException;
 import org.logger.repository.LogDetailsRepository;
 import org.logger.service.LogService;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.annotation.Rollback;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,9 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.booleanThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -176,13 +171,15 @@ class LogServiceUnitTest {
 
     @Test
     void shouldPrintLogs(){
+        List<Log> parsedLogs = Arrays.asList(logStart1, logStart2, logFinish2, logFinish1);
+
         Map<String, LogDetails> idToLogDetails = new HashMap<>();
         idToLogDetails.put("aa", logDetails1);
         idToLogDetails.put("bb", logDetails2);
 
         when(repository.findAll()).thenReturn(Arrays.asList(logDetails1, logDetails2));
 
-        boolean actual = service.printLogDetails(idToLogDetails);
+        boolean actual = service.printParsedLogsAndLogDetails(parsedLogs);
         verify(repository,atLeastOnce()).findAll();
         assertTrue(actual);
     }
