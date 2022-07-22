@@ -56,7 +56,7 @@ public class LogService {
 
     public Iterable<LogDetails> storeLogDetails(Map<String, LogDetails> idToLogDetails) {
         log.info("\"storeLogDetails\" method starts");
-        Iterable<LogDetails> result =  repository.saveAll(idToLogDetails.values());
+        Iterable<LogDetails> result = repository.saveAll(idToLogDetails.values());
         log.info("\"storeLogDetails\" method finished");
         return result;
     }

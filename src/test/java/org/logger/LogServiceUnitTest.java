@@ -32,16 +32,13 @@ class LogServiceUnitTest {
     private LogService service;
     private Log logStart1;
     private Log logFinish1;
-
     private Log logStart2;
     private Log logFinish2;
     private LogDetails logDetails1;
     private LogDetails logDetails2;
-    private String fileName = "forTest/fortest.txt";
-    private String fileNameWithSyntaxProblem = "forTest/fileWithSyntaxProblems.txt";
-
+    private String fileName = "fortest.txt";
+    private String fileNameWithSyntaxProblem = "fileWithSyntaxProblems.txt";
     private Long durationAlert = 4L;
-
 
     @BeforeEach
     void setUp() {
@@ -170,7 +167,7 @@ class LogServiceUnitTest {
     }
 
     @Test
-    void shouldPrintLogs(){
+    void shouldGetLogsFromDBAndPrintResults() {
         List<Log> parsedLogs = Arrays.asList(logStart1, logStart2, logFinish2, logFinish1);
 
         Map<String, LogDetails> idToLogDetails = new HashMap<>();
@@ -180,7 +177,7 @@ class LogServiceUnitTest {
         when(repository.findAll()).thenReturn(Arrays.asList(logDetails1, logDetails2));
 
         boolean actual = service.printParsedLogsAndLogDetails(parsedLogs);
-        verify(repository,atLeastOnce()).findAll();
+        verify(repository, atLeastOnce()).findAll();
         assertTrue(actual);
     }
 

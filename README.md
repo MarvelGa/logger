@@ -5,7 +5,8 @@ To run the application:
 2. You can enter a file name (filePath) here: ![img.png](img.png)
 In case you don't enter a file name (filePath), it will already be predefined
 3. Run the app
-4. The result will be: ![img_1.png](img_1.png)
+4. Provided unit tests for LogService (src/test/java/org/logger/LogServiceUnitTest.java) and test for context of spring boot (src/test/java/org/logger/SpringBootContextTest.java).
+5. The result will be: ![img_1.png](img_1.png)
 
 Summary of task
 Our custom-build server logs different events to a file named logfile.txt. Every event has 2 entries in the file
