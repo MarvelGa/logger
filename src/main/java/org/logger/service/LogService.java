@@ -8,13 +8,11 @@ import org.logger.entity.Log;
 import org.logger.entity.LogDetails;
 import org.logger.exception.FileCanNotBeParsedException;
 import org.logger.repository.LogDetailsRepository;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,8 +91,12 @@ public class LogService {
     public List<Log> parseLogs(String fileName) throws IOException, URISyntaxException {
         log.info("\"parseLogs\" method starts");
         ObjectMapper objectMapper = new ObjectMapper();
-        Stream<String> stringStream = Files.lines(Paths.get(ClassLoader.getSystemResource(fileName)
-                .toURI()));
+        File file = new File(fileName);
+        Reader reader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        String[] content = bufferedReader.lines()
+                .collect(Collectors.joining(System.lineSeparator())).split("\r\n");
+        Stream<String> stringStream = Arrays.stream(content);
 
         AtomicReference<List<Log>> parsedLogs = new AtomicReference<>(stringStream
                 .parallel()
@@ -107,15 +109,9 @@ public class LogService {
                     }
                 })
                 .collect(Collectors.toList()));
+        bufferedReader.close();
         stringStream.close();
         log.info("\"parseLogs\" method finished");
         return parsedLogs.get();
-    }
-
-    public boolean validatePath(String fileName) throws IOException {
-        log.info("\"validatePath\" method starts");
-        new ClassPathResource(fileName).getFile();
-        log.info("\"validatePath\" method finished");
-        return true;
     }
 }

@@ -1,25 +1,45 @@
+**"LoggerApi" application**
 
-LoggerApi
 To run the application by commandline:
 1. Prerequisites: maven version 3.6.3 and above, jdk11
-2. Installing: open a commandline in "logger" folder that contains project pom.xml file and use following commands:
-- mvn clean  
-- mvn compile
-- mvn package 
-3. After previous paragraph we will receive a jar file in target folder:
-- target/LoggerApi-1.0-SNAPSHOT.jar
-4. To run LoggerApi-1.0-SNAPSHOT.jar, enter in commandline:
-5. java -jar target/LoggerApi-1.0-SNAPSHOT.jar
+2. Installing: open a commandline in main folder that contains project pom.xml file and use following commands:
 
-To run the application by IDE:
-1. There is "logfile.txt" in the "resources" folder -> src/main/resources/logfile.txt
-2. You can enter a file name (filePath) here: ![img.png](img.png)
-In case you don't enter a file name (filePath), it will already be predefined
-3. Run the Application.java (src/main/java/org/logger/Application.java);
-4. The result will be: ![img_1.png](img_1.png)
-5. Provided unit tests for LogService (src/test/java/org/logger/LogServiceUnitTest.java) and test for context of spring boot (src/test/java/org/logger/SpringBootContextTest.java).
-6. After launch of the app you will find myApp.log in the root of the project.
-7. The application uses HSQLDB, all setting are located in application.properties (src/main/resources/application.properties).
+- **mvn clean**  
+- **mvn compile**
+- **mvn package** 
+
+3. After previous paragraph you will get a jar file in target folder:
+
+-**target/LoggerApi-1.0-SNAPSHOT.jar**
+4. To run LoggerApi-1.0-SNAPSHOT.jar, enter in commandline:
+```
+java -jar target/LoggerApi-1.0-SNAPSHOT.jar "[Path_to_input_file>] 
+```
+or (In case you don't enter a file name (filePath), it will already be predefined)
+
+```
+java -jar target/LoggerApi-1.0-SNAPSHOT.jar 
+```
+
+Examples of valid commands:
+```
+java -jar target/LoggerApi-1.0-SNAPSHOT.jar C:/Users/Halyna/Desktop/LoggerApp/LoggerApi/src/main/resources/logfile.txt
+java -jar target/LoggerApi-1.0-SNAPSHOT.jar src/main/resources/logfile.txt
+```
+
+5. The result will be:
+```
+*****************Result About Logs Details From DataBase***************************
+   LogDetails(id=scsmbstgra, duration=5, type=APPLICATION_LOG, host=12345, alert=true)
+   LogDetails(id=scsmbstgrb, duration=3, type=null, host=null, alert=false)
+   LogDetails(id=scsmbstgrc, duration=8, type=null, host=null, alert=true)
+********************************************
+```
+![img_2.png](img_2.png)
+
+6. Provided unit tests for LogService (src/test/java/org/logger/LogServiceUnitTest.java) and test for context of spring boot (src/test/java/org/logger/SpringBootContextTest.java).
+7. After launch of the app you will find myApp.log in the root of the project.
+8. The application uses HSQLDB, all setting are located in application.properties (src/main/resources/application.properties).
 
                                SUMMARY OF TASK
 Our custom-build server logs different events to a file named logfile.txt. Every event has 2 entries in the file

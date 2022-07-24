@@ -36,8 +36,8 @@ class LogServiceUnitTest {
     private Log logFinish2;
     private LogDetails logDetails1;
     private LogDetails logDetails2;
-    private String fileName = "fortest.txt";
-    private String fileNameWithSyntaxProblem = "fileWithSyntaxProblems.txt";
+    private String fileName = "src/test/resources/fortest.txt";
+    private String fileNameWithSyntaxProblem = "src/test/resources/fileWithSyntaxProblems.txt";
     private Long durationAlert = 4L;
 
     @BeforeEach
@@ -104,6 +104,14 @@ class LogServiceUnitTest {
     }
 
     @Test
+    void shouldThrowFileNotFoundExceptionIfFilesPathNotValid() {
+        Throwable exception = Assertions.assertThrows(
+                FileNotFoundException.class, () -> service.parseLogs("jjjj"));
+
+        assertEquals(FileNotFoundException.class, exception.getClass());
+    }
+
+    @Test
     void shouldConvertLogToLogDetails() {
         LogDetails expected = LogDetails.builder()
                 .id("aa")
@@ -115,22 +123,6 @@ class LogServiceUnitTest {
         LogDetails actual = service.convertLogToLogDetails(logStart1);
 
         assertEquals(expected, actual);
-    }
-
-    @Test
-    void shouldNotPassValidationAndThrowExceptionBecauseOfTheWrongFileName() {
-        String notExistFileName = "notExist.txt";
-
-        Throwable exception = Assertions.assertThrows(
-                FileNotFoundException.class, () -> service.validatePath(notExistFileName));
-
-        assertEquals(String.format("class path resource [%s] cannot be resolved to URL because it does not exist", notExistFileName), exception.getMessage());
-        assertEquals(FileNotFoundException.class, exception.getClass());
-    }
-
-    @Test
-    void shouldPassValidationIfFileNameIsCorrect() throws IOException {
-        assertTrue(service.validatePath(fileName));
     }
 
     @Test
