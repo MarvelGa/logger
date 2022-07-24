@@ -1,6 +1,17 @@
 
 LoggerApi
-To run the application:
+To run the application by commandline:
+1. Prerequisites: maven version 3.6.3 and above, jdk11
+2. Installing: open a commandline in "logger" folder that contains project pom.xml file and use following commands:
+- mvn clean  
+- mvn compile
+- mvn package 
+3. After previous paragraph we will receive a jar file in target folder:
+- target/LoggerApi-1.0-SNAPSHOT.jar
+4. To run LoggerApi-1.0-SNAPSHOT.jar, enter in commandline:
+5. java -jar target/LoggerApi-1.0-SNAPSHOT.jar
+
+To run the application by IDE:
 1. There is "logfile.txt" in the "resources" folder -> src/main/resources/logfile.txt
 2. You can enter a file name (filePath) here: ![img.png](img.png)
 In case you don't enter a file name (filePath), it will already be predefined
