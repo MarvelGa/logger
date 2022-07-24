@@ -10,7 +10,8 @@ To run the application by commandline:
 
 3. After previous paragraph you will get a jar file in target folder:
 
--**target/LoggerApi-1.0-SNAPSHOT.jar**
+ -  **target/LoggerApi-1.0-SNAPSHOT.jar**
+
 4. To run LoggerApi-1.0-SNAPSHOT.jar, enter in commandline:
 ```
 java -jar target/LoggerApi-1.0-SNAPSHOT.jar "[Path_to_input_file>] 
